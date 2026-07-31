@@ -1,0 +1,125 @@
+/* ==========================================
+   HABIT PRO - ANIMATIONS & MICRO-INTERACTIONS
+   ========================================== */
+
+/* Fade & Slide Entrance Animations */
+.animate-fade-in {
+  animation: fadeIn 350ms var(--ease-spring) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 450ms var(--ease-spring) forwards;
+}
+
+.animate-pop-in {
+  animation: popIn 300ms var(--ease-spring) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Completion Check-in Burst Glow */
+.completion-burst {
+  position: relative;
+}
+
+.completion-burst::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: var(--radius-pill);
+  background: radial-gradient(circle, var(--accent-success-glow) 0%, rgba(16, 185, 129, 0) 70%);
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+}
+
+.completion-burst.animating::after {
+  animation: burstPulse 600ms ease-out forwards;
+}
+
+@keyframes burstPulse {
+  0% {
+    opacity: 1;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+/* AI Glowing Pulse Loader */
+.ai-pulse-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-pulse-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(99, 102, 241, 0.15) 120deg,
+    rgba(16, 185, 129, 0.15) 240deg,
+    transparent 360deg
+  );
+  animation: rotateConic 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateConic {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Interactive Hover Spring */
+.interactive-spring {
+  transition: transform var(--transition-normal);
+}
+.interactive-spring:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+.interactive-spring:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+/* Stagger Delay Utility Classes */
+.delay-1 { animation-delay: 50ms; }
+.delay-2 { animation-delay: 100ms; }
+.delay-3 { animation-delay: 150ms; }
+.delay-4 { animation-delay: 200ms; }
+.delay-5 { animation-delay: 250ms; }

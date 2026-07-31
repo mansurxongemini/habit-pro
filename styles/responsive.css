@@ -1,0 +1,330 @@
+/* ==========================================
+   HABIT PRO - MOBILE RESPONSIVE & UI MICRO-OPTIMIZATIONS
+   Instagram / YouTube Hybrid Native Mobile Design System
+   ========================================== */
+
+/* Desktop Fixed Sidebar Navigation */
+.app-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .app-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(14, 20, 36, 0.9);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--glass-border);
+    padding: 32px 24px;
+    z-index: 50;
+  }
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  text-decoration: none;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 20px;
+  box-shadow: 0 4px 16px var(--accent-primary-glow);
+}
+
+.brand-title {
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #FFFFFF 0%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  border-radius: var(--radius-inner);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all var(--transition-normal);
+}
+
+.nav-item:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.nav-item.active {
+  color: #FFFFFF;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.18) 0%, rgba(99, 102, 241, 0.05) 100%);
+  border-left: 3px solid var(--accent-primary);
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2px;
+}
+
+/* Sticky Bottom Navigation (YouTube/Instagram Style) */
+.bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+  background: rgba(9, 13, 22, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+}
+
+@media (min-width: 1024px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 16px;
+  transition: all var(--transition-normal);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav-item.active {
+  color: var(--accent-primary);
+  transform: translateY(-2px);
+}
+
+.bottom-nav-item.active .bottom-nav-icon {
+  stroke: var(--accent-primary);
+  filter: drop-shadow(0 2px 8px var(--accent-primary-glow));
+}
+
+.bottom-nav-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Content Spacing for Mobile Bottom Bar */
+@media (max-width: 1023px) {
+  .content-wrapper {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  .header-bar {
+    padding: 16px 20px;
+  }
+
+  h1 {
+    font-size: 1.75rem !important;
+  }
+}
+
+/* Horizontal Scrollable Category Filter Pills */
+.cat-filter-container,
+div[style*="overflow-x: auto"] {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  touch-action: pan-x !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding-right: 1rem !important;
+}
+div[style*="overflow-x: auto"]::-webkit-scrollbar {
+  display: none !important;
+}
+
+.cat-filter-btn {
+  min-height: 38px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  touch-action: manipulation !important;
+}
+
+/* Mobile Bottom Sheet Modal Pattern (< 640px) */
+@media (max-width: 639px) {
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal-card {
+    max-width: 100% !important;
+    width: 100% !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 28px !important;
+    border-top-right-radius: 28px !important;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: slideUpBottomSheet 300ms var(--ease-spring);
+  }
+
+  @keyframes slideUpBottomSheet {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .btn {
+    min-height: 44px; /* Touch target accessibility rule */
+  }
+}
+
+/* Dedicated Mobile Micro-Optimizations (< 480px) */
+@media (max-width: 480px) {
+  /* 1. Compact Header */
+  .header-bar {
+    padding: 12px 14px !important;
+    gap: 8px !important;
+  }
+
+  .user-profile-widget {
+    gap: 8px !important;
+  }
+
+  .user-profile-widget div span {
+    display: none !important; /* Hide secondary subtitle to save space */
+  }
+
+  .header-actions {
+    gap: 6px !important;
+  }
+
+  .header-actions a[title="Go to Landing Page"] {
+    display: none !important; /* Hide non-critical home link in header on mobile */
+  }
+
+  .streak-pill {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+  }
+
+  /* 2. Adaptive Metric Cards (2x2 Grid) */
+  .grid-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .grid-stats .card-inner {
+    padding: 0.75rem 0.85rem !important;
+    border-radius: var(--radius-inner) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .grid-stats .card-inner span {
+    font-size: 0.7rem !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+  }
+
+  .grid-stats .card-inner h2 {
+    font-size: 1.35rem !important;
+    margin-top: 4px !important;
+    font-weight: 700 !important;
+  }
+
+  /* 3. Optimized Habit Card Layout */
+  .grid-habits h3 {
+    font-size: 1.1rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .grid-habits a[title*="Daily Reflection Notes"] {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* Grid Layout Breakpoints */
+.grid-stats {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 481px) and (max-width: 1023px) {
+  .grid-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .grid-stats { grid-template-columns: repeat(4, 1fr); }
+}
+
+.grid-habits {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .grid-habits { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1280px) {
+  .grid-habits { grid-template-columns: repeat(3, 1fr); }
+}
+
+.grid-analytics {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .grid-analytics { grid-template-columns: 2fr 1fr; }
+}

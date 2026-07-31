@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Habit Pro</title>
+  <meta name="description" content="Ultra-dark, high-performance habit tracker dashboard powered by AI insights, Chart.js analytics, and Firebase.">
+
+  <!-- Resource Preconnecting & DNS Prefetching for Ultra-Fast Loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.gstatic.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/animations.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+
+  <!-- Lucide Icons & Canvas Confetti CDN -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+</head>
+<body>
+
+  <!-- STANDALONE HABIT TRACKER DASHBOARD -->
+  <div id="main-app-container" class="app-container">
+
+    <!-- DESKTOP FIXED SIDEBAR NAVIGATION -->
+    <aside class="app-sidebar">
+      <a href="main.html" class="sidebar-brand">
+
+        <span class="brand-title">Habit Pro</span>
+      </a>
+
+      <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item active">
+          <i data-lucide="layout-dashboard" class="nav-icon"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="analys.html" class="nav-item">
+          <i data-lucide="bar-chart-3" class="nav-icon"></i>
+          <span>Analytics & AI</span>
+        </a>
+       
+        <a href="#" onclick="window.openSettingsModal(); return false;" class="nav-item">
+          <i data-lucide="settings" class="nav-icon"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div style="margin-top: auto;">
+        <span id="firebase-status-badge" class="eyebrow-tag">🔒 Sign In Required</span>
+      </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD CONTENT AREA -->
+    <main class="main-content">
+
+      <!-- STICKY REFACTORED iOS/INSTAGRAM 2-COLUMN HEADER BAR -->
+      <header class="header-bar app-header">
+        <div class="user-profile-compact">
+          
+        </div>
+
+        <div class="header-actions-group">
+          <div class="streak-badge-compact streak-pill" title="Current Daily Streak">
+            <span class="fire-icon">🔥</span>
+            <span id="header-streak-count" class="streak-count">0</span>
+          </div>
+
+          <button id="auth-action-btn" class="btn btn-glass btn-sm icon-btn-ghost" title="Account Action" aria-label="Account Action">
+            <i data-lucide="log-out" class="icon-sm" style="width: 16px; height: 16px;"></i>
+          </button>
+
+          <button id="settings-trigger-btn" class="btn btn-glass btn-sm icon-btn-ghost" onclick="window.openSettingsModal()" title="Settings" aria-label="Settings">
+            <i data-lucide="sliders" class="icon-sm" style="width: 16px; height: 16px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- MAIN WRAPPER -->
+      <div class="content-wrapper">
+
+        <!-- DASHBOARD HERO TITLE -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <span class="eyebrow-tag">DASHBOARD</span>
+            <h1>Daily Habits & Objectives</h1>
+          </div>
+
+          <button class="btn btn-primary" onclick="window.openCreateHabitModal()">
+            <div class="btn-icon-wrapper">＋</div>
+            <span>Add New Habit</span>
+          </button>
+        </div>
+
+        <!-- METRIC OVERVIEW CARDS -->
+        <section class="grid-stats" style="margin-bottom: 36px;">
+          <div class="card-outer">
+            <div class="card-inner">
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">ACTIVE HABITS</span>
+              <h2 id="stat-total-habits" style="font-size: 2rem; margin-top: 6px;">0</h2>
+            </div>
+          </div>
+
+          <div class="card-outer card-glow-success">
+            <div class="card-inner">
+              <span style="font-size: 12px; color: var(--accent-success); font-weight: 600;">COMPLETED TODAY</span>
+              <h2 id="stat-completed-today" style="font-size: 2rem; margin-top: 6px;">0 / 0</h2>
+            </div>
+          </div>
+
+          <div class="card-outer">
+            <div class="card-inner">
+              <span style="font-size: 12px; color: var(--accent-amber); font-weight: 600;">MAX STREAK</span>
+              <h2 id="stat-max-streak" style="font-size: 2rem; margin-top: 6px;">0 Days</h2>
+            </div>
+          </div>
+
+          <div class="card-outer card-glow-primary">
+            <div class="card-inner">
+              <span style="font-size: 12px; color: var(--accent-primary); font-weight: 600;">WEEKLY RATE</span>
+              <h2 id="stat-weekly-rate" style="font-size: 2rem; margin-top: 6px;">0%</h2>
+            </div>
+          </div>
+        </section>
+
+        <!-- CATEGORY FILTERS -->
+        <div style="display: flex; gap: 10px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px;">
+          <button class="btn btn-glass btn-sm cat-filter-btn active btn-primary" onclick="window.filterCategory('all', this)">All Habits</button>
+          <button class="btn btn-glass btn-sm cat-filter-btn" onclick="window.filterCategory('mind', this)">🧠 Mind</button>
+          <button class="btn btn-glass btn-sm cat-filter-btn" onclick="window.filterCategory('health', this)">🌿 Health</button>
+          <button class="btn btn-glass btn-sm cat-filter-btn" onclick="window.filterCategory('productivity', this)">⚡ Productivity</button>
+          <button class="btn btn-glass btn-sm cat-filter-btn" onclick="window.filterCategory('fitness', this)">💪 Fitness</button>
+        </div>
+
+        <!-- HABITS FEED CONTAINER -->
+        <div id="habits-feed-container" class="grid-habits">
+          <!-- Dynamic Cards injected via js/main.js -->
+        </div>
+
+      </div>
+    </main>
+
+    <!-- MOBILE FIXED BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="bottom-nav-item active">
+        <i data-lucide="layout-dashboard" class="bottom-nav-icon"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="analys.html" class="bottom-nav-item">
+        <i data-lucide="bar-chart-3" class="bottom-nav-icon"></i>
+        <span>Analytics</span>
+      </a>
+      <a href="#" onclick="window.openSettingsModal(); return false;" class="bottom-nav-item">
+        <i data-lucide="settings" class="bottom-nav-icon"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- MODAL: CREATE NEW HABIT -->
+  <div id="create-habit-modal" class="modal-overlay">
+    <div class="modal-card card-outer">
+      <div class="card-inner">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3>Create New Habit</h3>
+          <button class="btn-glass btn-sm" onclick="window.closeCreateHabitModal()">✕</button>
+        </div>
+
+        <form id="create-habit-form">
+          <div class="form-group">
+            <label class="form-label">Habit Title *</label>
+            <input type="text" id="habit-title" class="form-input" placeholder="e.g. 30 Mins Daily Reading" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <input type="text" id="habit-desc" class="form-input" placeholder="Why is this habit critical for your routine?">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select id="habit-category" class="form-select">
+                <option value="Productivity">Productivity</option>
+                <option value="Mind">Mind</option>
+                <option value="Health">Health</option>
+                <option value="Fitness">Fitness</option>
+                <option value="Custom">Custom</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Start Date *</label>
+              <input type="date" id="habit-start-date" class="form-input" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Repeat Interval (Days) *</label>
+              <input type="number" id="habit-interval" class="form-input" min="1" max="30" value="1" placeholder="1 = Every day, 2 = Every 2 days" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Target Deadline</label>
+              <input type="date" id="habit-deadline" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: var(--text-muted);">
+              <input type="checkbox" id="habit-infinite-checkbox" onchange="document.getElementById('habit-deadline').disabled = this.checked;">
+              <span>♾️ Infinite / No Deadline (Ongoing Habit)</span>
+            </label>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 12px;">
+            <button type="button" class="btn btn-glass" onclick="window.closeCreateHabitModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create Habit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SETTINGS & API CONFIG -->
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal-card card-outer">
+      <div class="card-inner">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3>⚙️ Settings & AI Setup</h3>
+          <button class="btn-glass btn-sm" onclick="window.closeSettingsModal()">✕</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">OpenRouter API Key</label>
+          <input type="password" id="openrouter-key-input" class="form-input" placeholder="sk-or-v1-...">
+          <span style="font-size: 11px; color: var(--text-subtle);">Saved to browser & Firebase Firestore settings.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Custom AI Model Name</label>
+          <input type="text" id="custom-ai-model-input" class="form-input" placeholder="e.g. anthropic/claude-3.5-sonnet">
+          <span style="font-size: 11px; color: var(--text-subtle);">Enter any supported OpenRouter model ID.</span>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="btn btn-glass" onclick="window.closeSettingsModal()">Close</button>
+          <button type="button" class="btn btn-primary" onclick="window.saveOpenRouterKeyAction()">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Worker PWA Cache & Main ES6 Application Logic -->
+  <script type="module" src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) window.lucide.createIcons();
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(e => {});
+      }
+    });
+  </script>
+</body>
+</html>

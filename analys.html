@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics & AI Insights — Habit Pro</title>
+  <meta name="description" content="Visual analytics, Chart.js trends, and OpenRouter AI behavioral analysis for your habits.">
+
+  <!-- Resource Preconnecting & DNS Prefetching -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.gstatic.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/animations.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+
+  <style>
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .heatmap-cell {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: transform 150ms ease;
+    }
+    .heatmap-cell:hover {
+      transform: scale(1.15);
+    }
+    .level-0 { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); }
+    .level-1 { background: rgba(99, 102, 241, 0.25); color: #818CF8; }
+    .level-2 { background: rgba(99, 102, 241, 0.55); color: #FFFFFF; }
+    .level-3 { background: rgba(16, 185, 129, 0.85); color: #FFFFFF; box-shadow: 0 0 12px rgba(16, 185, 129, 0.4); }
+
+    .heatmap-legend {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-subtle);
+    }
+    .heatmap-legend .heatmap-cell {
+      width: 14px;
+      height: 14px;
+    }
+  </style>
+
+  <!-- Lucide Icons, Chart.js, & Canvas Confetti CDN -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- DESKTOP FIXED SIDEBAR NAVIGATION -->
+    <aside class="app-sidebar">
+      <a href="main.html" class="sidebar-brand">
+        <span class="brand-title">Habit Pro</span>
+      </a>
+
+      <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item">
+          <i data-lucide="layout-dashboard" class="nav-icon"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="analys.html" class="nav-item active">
+          <i data-lucide="bar-chart-3" class="nav-icon"></i>
+          <span>Analytics & AI</span>
+        </a>
+       
+        <a href="#" onclick="window.openSettingsModal(); return false;" class="nav-item">
+          <i data-lucide="settings" class="nav-icon"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div style="margin-top: auto;">
+        <span id="firebase-status-badge" class="eyebrow-tag">🔒 Sign In Required</span>
+      </div>
+    </aside>
+
+    <!-- MAIN ANALYTICS CONTENT AREA -->
+    <main class="main-content">
+
+      <!-- STICKY REFACTORED iOS/INSTAGRAM 2-COLUMN HEADER BAR -->
+      <header class="header-bar app-header">
+        <div class="user-profile-compact">
+          
+        </div>
+
+        <div class="header-actions-group">
+          <div class="streak-badge-compact streak-pill" title="Current Daily Streak">
+            <span class="fire-icon">🔥</span>
+            <span id="header-streak-count" class="streak-count">0</span>
+          </div>
+
+          <button id="auth-action-btn" class="btn btn-glass btn-sm icon-btn-ghost" title="Account Action" aria-label="Account Action">
+            <i data-lucide="log-out" class="icon-sm" style="width: 16px; height: 16px;"></i>
+          </button>
+
+          <button id="settings-trigger-btn" class="btn btn-glass btn-sm icon-btn-ghost" onclick="window.openSettingsModal()" title="Settings" aria-label="Settings">
+            <i data-lucide="sliders" class="icon-sm" style="width: 16px; height: 16px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- CONTENT WRAPPER -->
+      <div class="content-wrapper">
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <span class="eyebrow-tag">PERFORMANCE & COGNITION</span>
+            <h1>Behavioral Analytics & AI Coach</h1>
+          </div>
+        </div>
+
+        <!-- ANALYTICS GRID: CHARTS + HEATMAP -->
+        <section class="grid-analytics" style="margin-bottom: 40px;">
+          
+          <!-- COMPLETION TREND CHART -->
+          <div class="card-outer card-glow-primary">
+            <div class="card-inner">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h4>7-Day Completion Velocity</h4>
+                <span style="font-size: 12px; color: var(--text-subtle);">Daily Rate</span>
+              </div>
+              <div style="position: relative; height: 260px; width: 100%;">
+                <canvas id="completion-chart-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- CATEGORY BREAKDOWN DOUGHNUT -->
+          <div class="card-outer">
+            <div class="card-inner">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h4>Category Breakdown</h4>
+                <span style="font-size: 12px; color: var(--text-subtle);">Distribution</span>
+              </div>
+              <div style="position: relative; height: 220px; width: 100%; display: flex; align-items: center; justify-content: center;">
+                <canvas id="category-chart-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- 28-DAY ACTIVITY HEATMAP SECTION -->
+        <section style="margin-bottom: 40px;">
+          <div class="card-outer">
+            <div class="card-inner">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                  <span class="eyebrow-tag">CONSISTENCY</span>
+                  <h3>28-Day Activity Heatmap</h3>
+                </div>
+                <div class="heatmap-legend">
+                  <span>Less</span>
+                  <div class="heatmap-cell level-0"></div>
+                  <div class="heatmap-cell level-1"></div>
+                  <div class="heatmap-cell level-2"></div>
+                  <div class="heatmap-cell level-3"></div>
+                  <span>More</span>
+                </div>
+              </div>
+
+              <div id="streak-heatmap-container" class="heatmap-grid">
+                <!-- Heatmap cells injected dynamically via js/charts.js -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- OPENROUTER AI COACH SYNTHESIZER SECTION -->
+        <section style="margin-bottom: 40px;">
+          <div class="card-outer card-glow-primary">
+            <div class="card-inner" style="padding: 32px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+                <div>
+                  <span class="eyebrow-tag">🧠 OPENROUTER AI COACH</span>
+                  <h2>Behavioral Bottleneck Synthesizer</h2>
+                  <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">
+                    Generate tailored cognitive strategies and habit routine optimization using state-of-the-art LLMs.
+                  </p>
+                </div>
+
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                  <select id="ai-model-select" class="form-select" style="min-width: 220px;" onchange="document.getElementById('ai-custom-model-wrapper').style.display = this.value === 'custom' ? 'block' : 'none';">
+                    <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet (Recommended)</option>
+                    <option value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B Instruct</option>
+                    <option value="mistralai/mistral-large">Mistral Large</option>
+                    <option value="google/gemini-pro-1.5">Gemini 1.5 Pro</option>
+                    <option value="custom">✏️ Enter Custom Model Name...</option>
+                  </select>
+
+                  <button class="btn btn-primary" onclick="window.triggerAIAnalysisAction()">
+                    <span>✨ Generate AI Analysis</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Custom Model Input Wrapper -->
+              <div id="ai-custom-model-wrapper" style="display: none; margin-bottom: 20px;">
+                <div class="form-group">
+                  <label class="form-label">Custom OpenRouter Model ID:</label>
+                  <input type="text" id="ai-custom-model-input" class="form-input" placeholder="e.g. deepseek/deepseek-r1">
+                </div>
+              </div>
+
+              <!-- AI Output Display Container -->
+              <div id="ai-output-container">
+                <div class="card-outer" style="background: rgba(255, 255, 255, 0.02);">
+                  <div class="card-inner" style="text-align: center; padding: 40px 24px;">
+                    <span style="font-size: 32px; display: block; margin-bottom: 12px;">🧠</span>
+                    <h4>Ready for AI Synthesis</h4>
+                    <p style="color: var(--text-muted); font-size: 13px; margin-top: 6px; max-width: 480px; margin-left: auto; margin-right: auto;">
+                      Click <strong>"Generate AI Analysis"</strong> to synthesize your daily completions, active streaks, and habit categories.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- MOBILE FIXED BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="bottom-nav-item">
+        <i data-lucide="layout-dashboard" class="bottom-nav-icon"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="analys.html" class="bottom-nav-item active">
+        <i data-lucide="bar-chart-3" class="bottom-nav-icon"></i>
+        <span>Analytics</span>
+      </a>
+      <a href="#" onclick="window.openSettingsModal(); return false;" class="bottom-nav-item">
+        <i data-lucide="settings" class="bottom-nav-icon"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- MODAL: SETTINGS & API CONFIG -->
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal-card card-outer">
+      <div class="card-inner">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3>⚙️ Settings & AI Setup</h3>
+          <button class="btn-glass btn-sm" onclick="window.closeSettingsModal()">✕</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">OpenRouter API Key</label>
+          <input type="password" id="openrouter-key-input" class="form-input" placeholder="sk-or-v1-...">
+          <span style="font-size: 11px; color: var(--text-subtle);">Saved to browser & Firebase Firestore settings.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Custom AI Model Name</label>
+          <input type="text" id="custom-ai-model-input" class="form-input" placeholder="e.g. anthropic/claude-3.5-sonnet">
+          <span style="font-size: 11px; color: var(--text-subtle);">Enter any supported OpenRouter model ID.</span>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="btn btn-glass" onclick="window.closeSettingsModal()">Close</button>
+          <button type="button" class="btn btn-primary" onclick="window.saveOpenRouterKeyAction()">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Worker PWA Cache & Main ES6 Application Logic -->
+  <script type="module" src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) window.lucide.createIcons();
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(e => {});
+      }
+    });
+  </script>
+</body>
+</html>

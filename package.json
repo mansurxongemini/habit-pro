@@ -1,0 +1,7 @@
+{
+  "name": "habit-pro",
+  "version": "1.0.0",
+  "description": "Habit Pro Web App",
+  "main": "js/main.js",
+  "dependencies": {}
+}

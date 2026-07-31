@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habit Pro — Build Systemic Habits Powered by Intelligence</title>
+  <meta name="description" content="An ultra-dark, high-performance habit tracker powered by OpenRouter AI insights, Chart.js analytics, and system discipline.">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/animations.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+  <link rel="stylesheet" href="styles/hero.css">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- ==========================================
+       STANDALONE HERO LANDING PAGE (main.html)
+       ========================================== -->
+  <div class="hero-landing-container">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+
+    <!-- HEADER NAVIGATION -->
+    <header class="hero-nav">
+      <a href="main.html" class="sidebar-brand" style="margin-bottom: 0;">
+
+        <span class="brand-title">Habit Pro</span>
+      </a>
+
+      <ul class="hero-nav-links">
+        <li><a href="#features" class="hero-nav-link">Features</a></li>
+        <li><a href="analys.html" class="hero-nav-link">AI Coach</a></li>
+        <li><a href="analys.html" class="hero-nav-link">Analytics</a></li>
+      </ul>
+
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <button id="hero-auth-btn" class="btn btn-glass btn-sm" onclick="window.triggerGoogleLogin()">Sign In with Google</button>
+        <button class="btn btn-primary btn-sm" onclick="window.triggerGoogleLogin()">
+          <span>Launch App</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO MAIN CONTENT -->
+    <section class="hero-content">
+      <div class="hero-badge-pill animate-fade-in">
+        <span>⚡ Powered by OpenRouter AI & Systemic Analytics</span>
+      </div>
+
+      <h1 class="hero-headline animate-slide-up">
+        Build Systemic Habits.<br>
+        <span class="gradient-text-accent">Powered by Intelligence.</span>
+      </h1>
+
+      <p class="hero-subheadline animate-slide-up delay-1">
+        Track daily routines, analyze behavioral bottlenecks with AI reflection synthesis, and build high-performance daily streaks.
+      </p>
+
+      <!-- CTA BUTTON GROUP -->
+      <div class="hero-cta-group animate-slide-up delay-2">
+        <button class="btn-hero-primary" onclick="window.triggerGoogleLogin()" style="cursor: pointer; border: none;">
+          <span>🚀 Launch App / Start Tracking</span>
+          <div class="btn-trailing-circle">↗</div>
+        </button>
+
+        <a href="analys.html" class="btn btn-glass" style="padding: 14px 24px; font-weight: 600; text-decoration: none;">
+          <span>🧠 View AI Analytics</span>
+        </a>
+      </div>
+
+      <!-- INTERACTIVE FLOATING PREVIEW SHOWCASE -->
+      <div class="hero-preview-showcase animate-slide-up delay-3">
+        <div class="card-outer floating-preview-card card-glow-primary">
+          <div class="card-inner" style="padding: 28px;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 16px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="streak-pill">14🔥 Day Streak</span>
+                <span class="eyebrow-tag" style="margin-bottom: 0;">LIVE PREVIEW</span>
+              </div>
+              <span style="font-size: 13px; color: var(--accent-success); font-weight: 700;">88% Completed Today</span>
+            </div>
+
+            <div class="preview-grid-mock">
+              <!-- Mock Habit Item -->
+              <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span class="category-badge cat-mind">Mind</span>
+                  <span style="font-size: 12px; color: var(--accent-success);">✓ Done</span>
+                </div>
+                <h4 style="font-size: 15px; margin-bottom: 4px;">Morning Deep Meditation</h4>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">"Felt deeply focused today."</p>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <!-- Mock Habit Item -->
+              <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span class="category-badge cat-health">Health</span>
+                  <span style="font-size: 12px; color: var(--accent-amber);">Pending</span>
+                </div>
+                <h4 style="font-size: 15px; margin-bottom: 4px;">Hydrate 3L Water</h4>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Target: 3.0 Liters daily</p>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill" style="width: 50%;"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+   
+
+  <!-- Main ES6 Application Logic -->
+  <script type="module" src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
