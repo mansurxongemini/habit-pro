@@ -194,6 +194,7 @@ div[style*="overflow-x: auto"]::-webkit-scrollbar {
   .modal-overlay {
     align-items: flex-end;
     padding: 0;
+    z-index: 2000 !important;
   }
 
   .modal-card {
@@ -206,6 +207,10 @@ div[style*="overflow-x: auto"]::-webkit-scrollbar {
     max-height: 85vh;
     overflow-y: auto;
     animation: slideUpBottomSheet 300ms var(--ease-spring);
+  }
+
+  .modal-card .card-inner {
+    padding: 24px 20px calc(36px + env(safe-area-inset-bottom, 0px)) 20px !important;
   }
 
   @keyframes slideUpBottomSheet {
