@@ -221,6 +221,34 @@ div[style*="overflow-x: auto"]::-webkit-scrollbar {
   .btn {
     min-height: 44px; /* Touch target accessibility rule */
   }
+
+  /* Responsive Calendar Grid (< 640px) */
+  .calendar-days-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .calendar-day-box {
+    border-radius: 8px !important;
+    padding: 2px !important;
+    aspect-ratio: 1 !important;
+  }
+
+  .day-num {
+    font-size: 11px !important;
+  }
+
+  .month-label {
+    font-size: 8px !important;
+    line-height: 1 !important;
+  }
+
+  .note-indicator-dot {
+    top: 2px !important;
+    right: 2px !important;
+    font-size: 8px !important;
+  }
 }
 
 /* Dedicated Mobile Micro-Optimizations (< 480px) */

@@ -20,14 +20,15 @@
   <style>
     .calendar-days-grid {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 8px;
       margin-bottom: 24px;
+      width: 100%;
     }
     .calendar-day-box {
       aspect-ratio: 1;
       border-radius: 12px;
-      padding: 6px;
+      padding: 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -37,6 +38,7 @@
       background: var(--glass-bg);
       transition: all var(--transition-normal);
       position: relative;
+      min-width: 0;
     }
     .calendar-day-box:hover {
       transform: translateY(-2px);
@@ -56,17 +58,17 @@
       box-shadow: 0 0 0 2px var(--accent-primary), 0 0 16px var(--accent-primary-glow);
     }
     .day-num {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
     }
     .month-label {
-      font-size: 10px;
+      font-size: 9px;
       color: var(--text-subtle);
     }
     .note-indicator-dot {
       position: absolute;
-      top: 4px;
-      right: 4px;
+      top: 3px;
+      right: 3px;
       font-size: 9px;
     }
   </style>
@@ -82,7 +84,7 @@
     <!-- DESKTOP FIXED SIDEBAR NAVIGATION -->
     <aside class="app-sidebar">
       <a href="main.html" class="sidebar-brand">
-        
+        <div class="brand-icon">⚡</div>
         <span class="brand-title">Habit Pro</span>
       </a>
 
@@ -95,7 +97,10 @@
           <i data-lucide="bar-chart-3" class="nav-icon"></i>
           <span>Analytics & AI</span>
         </a>
-       
+        <a href="main.html" class="nav-item">
+          <i data-lucide="sparkles" class="nav-icon"></i>
+          <span>Landing Intro</span>
+        </a>
         <a href="#" onclick="window.openSettingsModal(); return false;" class="nav-item">
           <i data-lucide="settings" class="nav-icon"></i>
           <span>Settings</span>
@@ -113,7 +118,13 @@
       <!-- STICKY REFACTORED iOS/INSTAGRAM 2-COLUMN HEADER BAR -->
       <header class="header-bar app-header">
         <div class="user-profile-compact">
-          
+          <div id="user-avatar" class="avatar-outer user-avatar-sm">
+            <div class="avatar-inner">A</div>
+          </div>
+          <div class="user-titles">
+            <span class="greeting-sub">Welcome back,</span>
+            <h3 id="user-greeting" class="user-name-title">Mansurxon</h3>
+          </div>
         </div>
 
         <div class="header-actions-group">
@@ -178,15 +189,15 @@
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
                 <div>
                   <span class="eyebrow-tag">SCHEDULED INTERVAL CALENDAR</span>
-                  <h3 id="current-month-label">July 2026</h3>
+                  <h3 id="current-month-label">August 2026</h3>
                 </div>
 
                 <!-- Multi-Month Navigation Controls -->
                 <div style="display: flex; gap: 8px; align-items: center;">
-                  <button class="btn btn-glass btn-sm" onclick="window.navigateMonth(-1)">
+                  <button class="btn btn-glass btn-sm" onclick="window.navigateMonth(-1)" style="padding: 6px 12px; white-space: nowrap;">
                     ← Prev Month
                   </button>
-                  <button class="btn btn-glass btn-sm" onclick="window.navigateMonth(1)">
+                  <button class="btn btn-glass btn-sm" onclick="window.navigateMonth(1)" style="padding: 6px 12px; white-space: nowrap;">
                     Next Month →
                   </button>
                 </div>
